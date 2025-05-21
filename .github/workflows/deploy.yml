@@ -8,6 +8,7 @@ on:
 jobs:
   terraform:
     runs-on: ubuntu-latest
+    environment: TF_API_TOKEN
 
     permissions: 
       id-token: write    # Obrigatório para emitir token OIDC
