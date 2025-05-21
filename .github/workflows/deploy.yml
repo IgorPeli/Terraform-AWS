@@ -11,6 +11,7 @@ env:
   TF_WORKSPACE: "terraform-aws"
   CONFIG_DIRECTORY: "./terraform-code"
 
+
 jobs:
   terraform:
     runs-on: ubuntu-latest
@@ -45,13 +46,10 @@ jobs:
       - name: Instalar Terraform
         uses: hashicorp/setup-terraform@v3
         
-
-
       - name: Terraform Init
         run: terraform init
         working-directory: ./terraform-code
 
-        
       - name: Terraform Apply
         run: terraform apply -auto-approve
         working-directory: ./terraform-code
