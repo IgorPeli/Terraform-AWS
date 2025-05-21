@@ -5,6 +5,13 @@ on:
     branches:
       - main
 
+env:
+  TF_CLOUD_ORGANIZATION: "Igor_Terraform"
+  TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
+  TF_WORKSPACE: "terraform-aws"
+  CONFIG_DIRECTORY: "./"
+
+
 jobs:
   terraform:
     runs-on: ubuntu-latest
@@ -38,15 +45,13 @@ jobs:
 
       - name: Instalar Terraform
         uses: hashicorp/setup-terraform@v3
+        
+
 
       - name: Terraform Init
         run: terraform init
-        env:
-          TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
-          TF_WORKSPACE: NewWorkspace
-          TF_CLOUD_ORGANIZATION: orgName
-        working-directory: ./terraform-code
 
+        
       - name: Terraform Apply
         run: terraform apply -auto-approve
         working-directory: ./terraform-code
