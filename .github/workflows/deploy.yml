@@ -41,6 +41,10 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
+        env:
+          TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+          TF_WORKSPACE: NewWorkspace
+          TF_CLOUD_ORGANIZATION: orgName
         working-directory: ./terraform-code
 
       - name: Terraform Apply
