@@ -28,6 +28,7 @@ jobs:
         working-directory: ./terraform-code
 
       - name: Verificar variáveis TF disponíveis
+        working-directory: ./terraform-code
         run: |
           echo "TF_API_TOKEN -> ${TF_API_TOKEN}"
           echo "TF_TOKEN_app_terraform_io -> ${TF_TOKEN_app_terraform_io}"  
