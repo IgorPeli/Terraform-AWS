@@ -5,13 +5,6 @@ on:
     branches:
       - main
 
-env:
-  TF_CLOUD_ORGANIZATION: "Igor_Terraform"
-  TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
-  TF_WORKSPACE: "terraform-aws"
-  CONFIG_DIRECTORY: "./terraform-code"
-
-
 jobs:
   terraform:
     runs-on: ubuntu-latest
@@ -45,6 +38,10 @@ jobs:
       - name: Terraform Init
         run: terraform init -reconfigure
         working-directory: ./terraform-code
+        env:
+          TF_CLOUD_ORGANIZATION: "Igor_Terraform"
+          TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
+          TF_WORKSPACE: "terraform-aws"
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
