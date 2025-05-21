@@ -1,4 +1,4 @@
-Name : Terraform OICD Deploy
+name: Terraform OICD Deploy
 
 on:
   push:
