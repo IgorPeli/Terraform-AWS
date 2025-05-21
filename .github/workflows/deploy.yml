@@ -9,7 +9,7 @@ env:
   TF_CLOUD_ORGANIZATION: "Igor_Terraform"
   TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
   TF_WORKSPACE: "terraform-aws"
-  CONFIG_DIRECTORY: "./"
+  CONFIG_DIRECTORY: "./terraform-code"
 
 jobs:
   terraform:
