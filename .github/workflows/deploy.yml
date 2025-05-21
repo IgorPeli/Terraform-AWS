@@ -1,4 +1,4 @@
-name: Terraform OICD Deploy
+name: Terraform OIDC Deploy
 
 on:
   push:
@@ -8,33 +8,34 @@ on:
 jobs:
   terraform:
     runs-on: ubuntu-latest
+
     permissions: 
-      id-token: write
-      contents: read
+      id-token: write    # Obrigatório para emitir token OIDC
+      contents: read     # Necessário para clonar o repositório
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repositório
         uses: actions/checkout@v4
 
-      - name: Debug
-        uses: echo "${{ steps.token.outputs.token }}"  
-        id: token
+      - name: Mostrar token OIDC (debug opcional)
+        id: oidc-token
         uses: actions/github-script@v7
         with:
-          script: return await core.getIDToken()
+          script: |
+            const token = await core.getIDToken();
+            console.log("TOKEN OIDC:", token);
 
-      - name: Configure AWS credentials via OIDC
+      - name: Configurar credenciais da AWS via OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::471112695892:role/Terraform-Role
           aws-region: us-east-1
 
-      - name: Setup Terraform
+      - name: Instalar Terraform
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
-        run: terraform init   
-      
-      - name: Terraform Apply
-        run: terraform apply -auto-approve 
+        run: terraform init
 
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
