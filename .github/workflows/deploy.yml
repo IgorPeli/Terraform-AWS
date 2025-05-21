@@ -50,6 +50,7 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
+        working-directory: ./terraform-code
 
         
       - name: Terraform Apply
