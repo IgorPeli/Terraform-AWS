@@ -8,7 +8,6 @@ on:
 jobs:
   terraform:
     runs-on: ubuntu-latest
-    environment: Dev
     
     permissions: 
       id-token: write    # Obrigatório para emitir token OIDC
@@ -17,6 +16,11 @@ jobs:
     steps:
       - name: Checkout repositório
         uses: actions/checkout@v4
+
+      - name: Verificar variáveis TF disponíveis
+        run: |
+          echo "TF_API_TOKEN -> ${TF_API_TOKEN}"
+          echo "TF_TOKEN_app_terraform_io -> ${TF_TOKEN_app_terraform_io}"  
 
       - name: Mostrar token OIDC (debug opcional)
         id: oidc-token
