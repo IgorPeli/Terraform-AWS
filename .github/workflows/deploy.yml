@@ -9,7 +9,7 @@ env:
   TF_CLOUD_ORGANIZATION: "Igor_Terraform"
   TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
   TF_WORKSPACE: "terraform-aws"
-  CONFIG_DIRECTORY: "../terraform-code"
+  CONFIG_DIRECTORY: "./terraform-code"
 
 
 jobs:
@@ -24,18 +24,14 @@ jobs:
       - name: Checkout repositório
         uses: actions/checkout@v4
 
+      - name: Verificar conteúdo do diretório Terraform
+        run: ls -l
+        working-directory: ./terraform-code
+
       - name: Verificar variáveis TF disponíveis
         run: |
           echo "TF_API_TOKEN -> ${TF_API_TOKEN}"
           echo "TF_TOKEN_app_terraform_io -> ${TF_TOKEN_app_terraform_io}"  
-
-      - name: Mostrar token OIDC (debug opcional)
-        id: oidc-token
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const token = await core.getIDToken();
-            console.log("TOKEN OIDC:", token);
 
       - name: Configurar credenciais da AWS via OIDC
         uses: aws-actions/configure-aws-credentials@v4
@@ -47,7 +43,7 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         
       - name: Terraform Init
-        run: terraform init
+        run: terraform init -reconfigure
         working-directory: ./terraform-code
 
       - name: Terraform Apply
