@@ -16,6 +16,13 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Debug
+        uses: echo "${{ steps.token.outputs.token }}"  
+        id: token
+        uses: actions/github-script@v7
+        with:
+          script: return await core.getIDToken()
+
       - name: Configure AWS credentials via OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
