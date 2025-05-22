@@ -3,7 +3,7 @@ name: Terraform OIDC Deploy
 on:
   push:
     branches:
-      - secondary
+      - main
 
 env:
   TF_CLOUD_ORGANIZATION: "Igor_Terraform"
