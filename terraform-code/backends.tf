@@ -4,7 +4,7 @@ terraform {
     hostname     = "app.terraform.io"
     
     workspaces {
-      name = "terraform-aws" # Troque pelo nome exato do seu workspace
+      prefix = "terraform-aws" # Troque pelo nome exato do seu workspace
     }
   }
 }
