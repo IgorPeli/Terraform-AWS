@@ -9,13 +9,13 @@ resource "aws_route_table" "RouterToIGW" {
 }
 
 resource "aws_route_table_association" "PublicAssociationA" {
-  subnet_id      = aws_subnet.AppSubnetA
-  route_table_id = aws_route_table.RouterToIGW
+  subnet_id      = aws_subnet.AppSubnetA.id
+  route_table_id = aws_route_table.RouterToIGW.id
 
 }
 
 resource "aws_route_table_association" "PublicAssociationB" {
-  subnet_id      = aws_subnet.AppSubnetB
-  route_table_id = aws_route_table.RouterToIGW
+  subnet_id      = aws_subnet.AppSubnetB.id
+  route_table_id = aws_route_table.RouterToIGW.id
 
 }
