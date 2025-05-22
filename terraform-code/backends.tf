@@ -1,10 +1,7 @@
 terraform {
   backend "remote" {
-    organization = "Igor_Terraform" # Troque pelo nome exato da sua organização
+    organization = "Igor_Terraform"
     hostname     = "app.terraform.io"
-
-    workspaces {
-      name = "terraform-aws" # Troque pelo nome exato do seu workspace
-    }
+    workspace    = "terraform-aws"
   }
 }
