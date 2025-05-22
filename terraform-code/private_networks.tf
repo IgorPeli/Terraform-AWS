@@ -3,7 +3,7 @@ resource "aws_route_table" "RouterToNatA" {
   #Criando-se as regras  
   route {
     cidr_block = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.natA
+    nat_gateway_id = aws_nat_gateway.natA.id
   }
 }
  
@@ -19,7 +19,7 @@ resource "aws_route_table" "RouterToNatB" {
   #Criando-se as regras  
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_nat_gateway.natB
+    gateway_id = aws_nat_gateway.natB.id
   }
 }
 
