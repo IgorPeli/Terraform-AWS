@@ -18,6 +18,7 @@ resource "aws_subnet" "PublicSubnetA" {
   enable_resource_name_dns_aaaa_record_on_launch = true
   availability_zone                              = data.aws_availability_zones.available.names[0]
   cidr_block                                     = "10.16.0.0/20"
+  map_public_ip_on_launch                        = true
 
 }
 
@@ -27,7 +28,7 @@ resource "aws_subnet" "PublicSubnetB" {
   enable_resource_name_dns_aaaa_record_on_launch = true
   availability_zone                              = data.aws_availability_zones.available.names[1]
   cidr_block                                     = "10.16.16.0/20"
-
+  map_public_ip_on_launch                        = true
 }
 
 resource "aws_subnet" "AppSubnetA" {
