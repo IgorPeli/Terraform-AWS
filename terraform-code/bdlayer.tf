@@ -1,12 +1,12 @@
 
 resource "aws_rds_cluster" "rds_cluster" {
-  cluster_identifier = "wordpresscluster"
-  availability_zones = ["us-west-1a", "us-west-1b"]
-  engine             = "aurora-mysql"
-  engine_version     = "8.0.mysql_aurora.3.04.2"
-  master_username    = "wp_user1"
-  master_password    = "wpadmin1"
-  database_name      = "Wordpress"
+  cluster_identifier     = "wordpresscluster"
+  availability_zones     = ["us-west-1a", "us-west-1b"]
+  engine                 = "aurora-mysql"
+  engine_version         = "8.0.mysql_aurora.3.04.2"
+  master_username        = "wp_user1"
+  master_password        = "wpadmin1"
+  database_name          = "Wordpress"
   vpc_security_group_ids = [aws_security_group.allow_aurora.id] #Este cluster Aurora só pode ser acessado de acordo com as regras do grupo de segurança allow_aurora
 
 }
