@@ -77,8 +77,9 @@ resource "aws_ecs_task_definition" "Task" {
   network_mode             = "awsvpc"
   container_definitions = jsonencode([
     {
-      name   = "WordPress"
-      image  = "public.ecr.aws/bitnami/wordpress:latest"
+      name  = "WordPress"
+      image = "public.ecr.aws/bitnami/wordpress:latest"
+
       cpu    = 512
       memory = 1024
       portMappings = [
@@ -88,6 +89,7 @@ resource "aws_ecs_task_definition" "Task" {
           hostPort      = 8080
         }
       ]
+
       environment = [
         {
           name  = "wordpress_database_host"
@@ -121,8 +123,27 @@ resource "aws_ecs_task_definition" "Task" {
           name  = "APACHE_HTTP_ADDRESS"
           value = "0.0.0.0"
         },
-      ]
-      log_Configuration = {
+        {
+          name  = "S3_UPLOADS_BUCKET"
+          value = "${aws_s3_bucket.wordpress_media.bucket}"
+        },
+        {
+          name  = "S3_UPLOADS_REGION"
+          value = "us-west-1"
+        },
+        {
+          name  = "S3_UPLOADS_AUTOENABLE"
+          value = "true"
+        }
+      ],
+
+      command = [
+        "/bin/bash",
+        "-c",
+        "wp plugin install https://github.com/humanmade/S3-Uploads/archive/master.zip --activate && apache2-foreground"
+      ],
+
+      logConfiguration = {
         logDriver = "awslogs"
         options = {
           awslogs-group         = "${aws_cloudwatch_log_group.logGroup.name}"
@@ -188,8 +209,8 @@ resource "aws_appautoscaling_policy" "cpu_scaling_policy" {
     predefined_metric_specification {
       predefined_metric_type = "ECSServiceAverageCPUUtilization"
     }
-    target_value = 60.0
-    scale_in_cooldown = 60
+    target_value       = 60.0
+    scale_in_cooldown  = 60
     scale_out_cooldown = 60
   }
 
