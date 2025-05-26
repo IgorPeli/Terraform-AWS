@@ -32,8 +32,6 @@ resource "aws_vpc_security_group_egress_rule" "appEgress" {
   cidr_ipv4         = "0.0.0.0/0"
 }
 
-
-
 resource "aws_ecs_cluster" "EcsCluster" {
   name = "TCC-Cluster"
 
@@ -140,12 +138,12 @@ resource "aws_cloudwatch_log_group" "logGroup" {
   name = "/ecs/wordpress"
 }
 
-
 resource "aws_ecs_service" "EcsService" {
   name            = "WordPress"
   cluster         = aws_ecs_cluster.EcsCluster.id
   launch_type     = "FARGATE"
   task_definition = aws_ecs_task_definition.Task.arn
+  desired_count   = 2
 
   network_configuration {
     subnets          = [aws_subnet.AppSubnetA.id, aws_subnet.AppSubnetB.id]
@@ -168,5 +166,31 @@ resource "aws_ecs_service" "EcsService" {
     aws_rds_cluster_instance.instanceA,
     aws_rds_cluster_instance.instanceB
   ]
+
+}
+
+resource "aws_appautoscaling_target" "ecs_target" {
+  max_capacity       = 4
+  min_capacity       = 2
+  service_namespace  = "ecs"
+  resource_id        = "service/${aws_ecs_cluster.EcsCluster.name}/${aws_ecs_service.EcsService.name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+}
+
+resource "aws_appautoscaling_policy" "cpu_scaling_policy" {
+  service_namespace  = "ecs"
+  resource_id        = aws_appautoscaling_target.ecs_target.resource_id
+  scalable_dimension = aws_appautoscaling_target.ecs_target.scalable_dimension
+  name               = "appScaling"
+  policy_type        = "TargetTrackingScaling"
+
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ECSServiceAverageCPUUtilization"
+    }
+    target_value = 60.0
+    scale_in_cooldown = 60
+    scale_out_cooldown = 60
+  }
 
 }
